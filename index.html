@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PBTI - 家长人格测试 | 辅导作业真相鉴定</title>
+  <style>
+    :root {
+      --primary: #E8734A;
+      --primary-dark: #D45A2A;
+      --primary-light: #FFF3ED;
+      --secondary: #5BA8A0;
+      --accent: #F5C563;
+      --text-dark: #2D3436;
+      --text-medium: #636E72;
+      --text-light: #B2BEC3;
+      --bg: #FFF9F5;
+      --card-bg: #FFFFFF;
+      --radius: 20px;
+      --shadow: 0 8px 32px rgba(232,115,74,0.12);
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text-dark);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+      min-height: 100vh;
+    }
+
+    /* ===== 首页 ===== */
+    .home-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 40px 16px;
+    }
+
+    .logo-icon {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, var(--primary), #F5A66B);
+      border-radius: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      margin-bottom: 24px;
+      box-shadow: 0 12px 40px rgba(232,115,74,0.3);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--secondary), #7BC4BB);
+      color: white;
+      font-size: 13px;
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+      font-weight: 500;
+    }
+
+    .main-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .main-title span { color: var(--primary); }
+
+    .subtitle {
+      font-size: 15px;
+      color: var(--text-medium);
+      margin-bottom: 8px;
+    }
+
+    .tagline {
+      font-size: 14px;
+      color: var(--text-light);
+      margin-bottom: 36px;
+    }
+
+    .start-btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: none;
+      padding: 16px 56px;
+      font-size: 17px;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 28px rgba(232,115,74,0.35);
+      letter-spacing: 1px;
+    }
+
+    .start-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(232,115,74,0.45);
+    }
+
+    .start-btn:active {
+      transform: translateY(0);
+    }
+
+    .home-features {
+      margin-top: 48px;
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .feature-item {
+      text-align: center;
+      flex: 0 0 auto;
+    }
+
+    .feature-item .num {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .feature-item .label {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    /* ===== 答题页 ===== */
+    .quiz-page { display: none; padding-top: 20px; }
+    
+    .quiz-header {
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 100;
+      padding: 16px 0 12px;
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: #EEE8E4;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #F5A66B);
+      border-radius: 3px;
+      transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .quiz-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .q-num {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 16px;
+    }
+
+    .q-hint {
+      color: var(--text-light);
+      font-size: 13px;
+    }
+
+    .question-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .question-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-dark);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 16px 20px;
+      border: 2px solid #F0E8E4;
+      border-radius: 14px;
+      background: white;
+      font-size: 15px;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: inherit;
+      line-height: 1.5;
+    }
+
+    .option-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      transform: translateX(4px);
+    }
+
+    .option-btn.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      position: relative;
+    }
+
+    .option-btn.selected::after {
+      content: '✓';
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .nav-btn {
+      flex: 1;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: inherit;
+      border: none;
+    }
+
+    .nav-btn.prev {
+      background: #F5F0EE;
+      color: var(--text-medium);
+    }
+
+    .nav-btn.prev:hover {
+      background: #EBE5E2;
+    }
+
+    .nav-btn.next {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 4px 16px rgba(232,115,74,0.25);
+    }
+
+    .nav-btn.next:hover {
+      box-shadow: 0 6px 22px rgba(232,115,74,0.35);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* ===== 结果页 ===== */
+    .result-page { display: none; text-align: center; padding-top: 20px; }
+
+    .result-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 36px 24px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+    }
+
+    .result-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--primary), #F5A66B);
+      color: white;
+      font-size: 13px;
+      padding: 6px 20px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .result-type-name {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+    }
+
+    .result-type-en {
+      font-size: 18px;
+      color: var(--primary);
+      font-weight: 700;
+      letter-spacing: 3px;
+      margin-bottom: 12px;
+    }
+
+    .result-tagline {
+      font-size: 15px;
+      color: var(--text-medium);
+      font-style: italic;
+      margin-bottom: 20px;
+      padding: 0 12px;
+    }
+
+    .match-rate {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      padding: 8px 22px;
+      border-radius: 30px;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 28px;
+    }
+
+    .radar-section {
+      margin: 28px 0;
+    }
+
+    .radar-title {
+      font-size: 14px;
+      color: var(--text-light);
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+
+    .radar-container {
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
+    }
+
+    .radar-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .result-desc {
+      text-align: left;
+      background: #FAFAFA;
+      border-radius: 16px;
+      padding: 24px 20px;
+      margin-top: 24px;
+    }
+
+    .result-desc-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .result-desc-title::before {
+      content: '💡';
+    }
+
+    .result-desc-text {
+      font-size: 14.5px;
+      color: var(--text-medium);
+      line-height: 1.85;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: inherit;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .action-btn.share {
+      background: linear-gradient(135deg, var(--secondary), #7BC4BB);
+      color: white;
+      box-shadow: 0 4px 16px rgba(91,168,160,0.25);
+    }
+
+    .action-btn.retest {
+      background: #F5F0EE;
+      color: var(--text-medium);
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .disclaimer {
+      margin-top: 32px;
+      padding: 16px 20px;
+      background: #FEF8F5;
+      border-radius: 12px;
+      font-size: 12px;
+      color: var(--text-light);
+      line-height: 1.7;
+      text-align: left;
+    }
+
+    /* 动画 */
+    .fade-in {
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 人格专属卡片图 */
+    .personality-card {
+      margin: 28px 0;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      background: #fff;
+    }
+
+    .card-visual {
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-visual svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .card-body {
+      padding: 24px 20px 20px;
+      text-align: center;
+    }
+
+    .card-type-big {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 2px;
+    }
+
+    .card-en-big {
+      font-size: 14px;
+      color: var(--primary);
+      font-weight: 700;
+      letter-spacing: 3px;
+      margin-bottom: 12px;
+    }
+
+    .card-line {
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 2px;
+      margin: 0 auto 14px;
+    }
+
+    .card-quote {
+      font-size: 15px;
+      color: var(--text-medium);
+      font-style: italic;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .card-tags {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .card-tag {
+      display: inline-block;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      background: #F5F0EE;
+      color: var(--text-medium);
+    }
+
+    /* 响应式 */
+    @media (max-width: 400px) {
+      .main-title { font-size: 26px; }
+      .question-text { font-size: 16px; }
+      .result-type-name { font-size: 30px; }
+      .container { padding: 16px 12px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ==================== 首页 ==================== -->
+<div class="home-page" id="homePage">
+  <div class="logo-icon">👨‍👩‍👧</div>
+  <div class="badge">MBTI已经过时 · PBTI来了</div>
+  <h1 class="main-title"><span>家长</span>人格测试<br>辅导作业真相鉴定</h1>
+  <p class="subtitle">30道题，测出你的真实育儿人格</p>
+  <p class="tagline">不是你不够好，是你太真实了 🎯</p>
+  
+  <button class="start-btn" onclick="startQuiz()">开始测试</button>
+  
+  <div class="home-features">
+    <div class="feature-item">
+      <div class="num">30</div>
+      <div class="label">道精选题目</div>
+    </div>
+    <div class="feature-item">
+      <div class="num">10</div>
+      <div class="label">种家长人格</div>
+    </div>
+    <div class="feature-item">
+      <div class="num">15</div>
+      <div class="label">维精准分析</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 答题页 ==================== -->
+<div class="quiz-page container" id="quizPage">
+  <div class="quiz-header">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="quiz-info">
+      <span class="q-num" id="qNum">第 1 题 / 共 30 题</span>
+      <span class="q-hint" id="qHint">选择最符合你的选项 →</span>
+    </div>
+  </div>
+  
+  <div class="question-card fade-in" id="questionCard">
+    <p class="question-text" id="questionText"></p>
+    <ul class="options-list" id="optionsList"></ul>
+  </div>
+  
+  <div class="nav-buttons">
+    <button class="nav-btn prev" id="prevBtn" onclick="prevQuestion()" disabled>上一题</button>
+    <button class="nav-btn next" id="nextBtn" onclick="nextQuestion()">下一题</button>
+  </div>
+</div>
+
+<!-- ==================== 结果页 ==================== -->
+<div class="result-page container" id="resultPage">
+  <div class="result-card fade-in">
+    <div class="result-badge">你的家长人格是</div>
+    <h2 class="result-type-name" id="resultName"></h2>
+    <p class="result-type-en" id="resultEn"></p>
+    <p class="result-tagline" id="resultTagline"></p>
+    <div class="match-rate" id="matchRate">匹配度 --%</div>
+
+    <!-- 人格专属卡片图 -->
+    <div class="personality-card" id="personalityCard">
+      <div class="card-visual" id="cardVisual"></div>
+      <div class="card-body">
+        <div class="card-type-big" id="cardTypeBig"></div>
+        <div class="card-en-big" id="cardEnBig"></div>
+        <div class="card-line"></div>
+        <p class="card-quote" id="cardQuote"></p>
+        <div class="card-tags" id="cardTags"></div>
+      </div>
+    </div>
+
+    <div class="radar-section">
+      <p class="radar-title">📊 十五维度能力雷达</p>
+      <div class="radar-container">
+        <svg class="radar-svg" id="radarSvg" viewBox="0 0 400 400"></svg>
+      </div>
+    </div>
+    
+    <div class="result-desc">
+      <p class="result-desc-title">深度解读</p>
+      <p class="result-desc-text" id="resultDesc"></p>
+    </div>
+    
+    <div class="result-actions">
+      <button class="action-btn share" onclick="shareResult()">📤 分享结果</button>
+      <button class="action-btn retest" onclick="location.reload()">🔄 再测一次</button>
+    </div>
+  </div>
+  
+  <div class="disclaimer">
+    ⚠️ 本测试纯属娱乐，基于互联网观察和幽默创作，不构成任何心理学诊断或育儿建议。
+    无论测出什么类型，你都已经是孩子心中最好的家长了 ❤️
+  </div>
+</div>
+
+<script>
+// ============================================================
+// 【题库】30道题目 × 3个选项 × 15个维度映射
+// 维度分组：自我(S1-S3)、情感(E1-E3)、态度(A1-A3)、行动(Ac1-Ac3)、社交(So1-So3)
+// 每个选项对该题目所属维度贡献 1/2/3 分（A=1分, B=2分, C=3分）
+// ============================================================
+const QUESTIONS = [
+  // === 自我模型 (S1-S3) ===
+  {
+    q: "孩子考试考了78分，你的第一反应是？",
+    options: ["深呼吸，先看错在哪里", "有点失落，但能接受", "怎么才78？！平时不是都复习了吗"],
+    dims: ["self_confidence"], scores: [3, 2, 1]
+  },
+  {
+    q: "辅导作业时，你觉得自己是一个什么样的家长？",
+    options: ["还行吧，尽力就好", "有时候做得好，有时候不行", "我可能真的不太擅长这个……"],
+    dims: ["self_clarity"], scores: [3, 2, 1]
+  },
+  {
+    q: "\"做一个好家长\"对你来说意味着什么？",
+    options: ["陪伴和爱就够了", "成绩和习惯都要抓", "什么都想给孩子最好的"],
+    dims: ["self_value"], scores: [1, 2, 3]
+  },
+
+  // === 情感模型 (E1-E3) ===
+  {
+    q: "孩子哭闹着不肯写作业，你会？",
+    options: ["抱抱他，等情绪好了再说", "讲道理，告诉他必须写完", "我也很崩溃但强忍着不发火"],
+    dims: ["emotion_security"], scores: [3, 2, 1]
+  },
+  {
+    q: "你对孩子的学习投入了多少情感精力？（诚实回答）",
+    options: ["该关心就关心，不会过度操心", "挺多的，每天都会想这事", "全部身心都在这上面了"],
+    dims: ["emotion_invest"], scores: [1, 2, 3]
+  },
+  {
+    q: "孩子说\"妈妈/爸爸我自己的事我自己管\"，你心里？",
+    options: ["好嘞，终于解放了", "有点不放心但还是尊重", "不行，你还小不懂事"],
+    dims: ["emotion_boundary"], scores: [3, 2, 1]
+  },
+
+  // === 态度模型 (A1-A3) ===
+  {
+    q: "看到朋友圈里别人家孩子又拿了什么奖，你通常？",
+    options: ["点赞恭喜，内心毫无波澜", "会想一下我家孩子是不是落下了", "焦虑感立刻涌上心头"],
+    dims: ["attitude_worldview"], scores: [3, 2, 1]
+  },
+  {
+    q: "对于\"快乐教育\"vs\"严格管教\"，你的立场更接近？",
+    options: ["孩子开心最重要", "该严的时候严，该松的时候松", "不逼一把不知道孩子多优秀"],
+    dims: ["attitude_rules"], scores: [1, 2, 3]
+  },
+  {
+    q: "你觉得孩子未来的成功取决于？",
+    options: ["他自己的选择和努力", "家庭教育和引导很重要", "从小就得铺好路不然来不及"],
+    dims: ["attitude_meaning"], scores: [1, 2, 3]
+  },
+
+  // === 行动模型 (Ac1-Ac3) ===
+  {
+    q: "晚上9点，孩子还有一堆作业没做完，你会？",
+    options: ["让他自己安排，做不完就做不完", "陪着他，但不催得太紧", "坐在旁边一道一道盯着做完"],
+    dims: ["act_motivation"], scores: [1, 2, 3]
+  },
+  {
+    q: "给孩子报兴趣班/补习班时，你的决策风格是？",
+    options: ["孩子喜欢就报", "对比几家再做决定", "周围人都报了我们也不能落下"],
+    dims: ["act_decision"], scores: [1, 2, 3]
+  },
+  {
+    q: "周末的计划通常是？",
+    options: ["随缘，走到哪算哪", "有大致安排但也灵活调整", "精确到小时的行程表"],
+    dims: ["act_execute"], scores: [1, 2, 3]
+  },
+
+  // === 社交模型 (So1-So3) ===
+  {
+    q: "家长群里老师发了成绩排名，你会？",
+    options: ["默默看完就不说话了", "私下看看自家孩子的位置", "立刻截图发家人群讨论"],
+    dims: ["social_initiative"], scores: [1, 2, 3]
+  },
+  {
+    q: "其他家长跟你抱怨自家孩子，你通常会？",
+    options: ["听着附和几句", "分享自己的经历一起吐槽", "忍不住给对方提建议"],
+    dims: ["social_boundary"], scores: [1, 2, 3]
+  },
+  {
+    q: "在朋友面前提到自己的孩子，你更倾向于？",
+    options: ["实话实说，好的不好的都说", "多说优点少说缺点", "基本只说好的方面"],
+    dims: ["social_authenticity"], scores: [3, 2, 1]
+  },
+
+  // === 第二轮：自我模型 ===
+  {
+    q: "如果用一句话形容你辅导作业的状态， closest 的是？",
+    options: ["佛系青年带娃版", "在崩溃边缘反复横跳", "情绪稳定得像AI"],
+    dims: ["self_confidence"], scores: [2, 1, 3]
+  },
+  {
+    q: "你觉得自己了解自己的孩子吗？",
+    options: "split",
+    options: ["还算比较了解", "有时候懂有时候完全摸不透", "越来越觉得不了解他了"],
+    dims: ["self_clarity"], scores: [3, 2, 1]
+  },
+  {
+    q: "\"别人的孩子\"这个词让你第一反应是？",
+    options: ["每个孩子都不一样，没可比性", "偶尔会羡慕一下", "确实有些地方值得学习"],
+    dims: ["self_value"], scores: [3, 2, 1]
+  },
+
+  // === 第二轮：情感模型 ===
+  {
+    q: "孩子顶嘴的时候，你内心的真实活动是？",
+    options: ["好吧你说得有道理（忍住笑）", "深呼吸数到十", "这孩子今天是想造反吗"],
+    dims: ["emotion_security"], scores: [3, 2, 1]
+  },
+  {
+    q: "你上一次因为孩子的事失眠是什么时候？",
+    options: ["很少失眠", "偶尔会有", "经常，想太多停不下来"],
+    dims: ["emotion_invest"], scores: [1, 2, 3]
+  },
+  {
+    q: "孩子说\"你别管我了\"，你的反应是？",
+    options: ["好，那我退一步", "心里难受但表面上同意", "不管？我不管谁管！"],
+    dims: ["emotion_boundary"], scores: [3, 2, 1]
+  },
+
+  // === 第二轮：态度模型 ===
+  {
+    q: "对于鸡娃这件事，你的态度是？",
+    options: ["顺其自然，健康快乐就行", "适度推动，不想太极端", "不鸡不行，竞争太激烈了"],
+    dims: ["attitude_worldview"], scores: [1, 2, 3]
+  },
+  {
+    q: "你理想中的亲子关系是？",
+    options: ["像朋友一样平等相处", "亦师亦友，有规矩也有爱", "我是家长你是孩子，要有敬畏心"],
+    dims: ["attitude_rules"], scores: [1, 2, 3]
+  },
+  {
+    q: "你认为孩子现阶段最重要的任务是？",
+    options: ["养成好习惯和品格", "学习成绩要跟上", "全面发展不能有短板"],
+    dims: ["attitude_meaning"], scores: [1, 2, 3]
+  },
+
+  // === 第二轮：行动模型 ===
+  {
+    q: "孩子磨蹭写作业，你的应对方式通常是？",
+    options: ["提醒一两次就不说了", "定时器+奖励机制齐上阵", "坐在旁边全程盯着"],
+    dims: ["act_motivation"], scores: [1, 2, 3]
+  },
+  {
+    q: "面对孩子教育上的问题，你一般会？",
+    options: ["自己琢磨想办法", "上网查查看别人怎么做", "咨询专家/老师/有经验的家长"],
+    dims: ["act_decision"], scores: [1, 2, 3]
+  },
+  {
+    q: "每天花在孩子学习和教育上的时间大约是？",
+    options: ["1小时以内", "1-3小时", "3小时以上"],
+    dims: ["act_execute"], scores: [1, 2, 3]
+  },
+
+  // === 第二轮：社交模型 ===
+  {
+    q: "家长会上你通常坐在？",
+    options: ["后排安静听", "中间位置认真记笔记", "前排积极互动提问"],
+    dims: ["social_initiative"], scores: [1, 2, 3]
+  },
+  {
+    q: "当亲戚问你孩子成绩/表现时，你会？",
+    options: ["大大方方说实话", "挑好的说，尴尬的略过", "提前教孩子怎么回答"],
+    dims: ["social_boundary"], scores: [3, 2, 1]
+  },
+  {
+    q: "你在社交媒体上分享育儿内容的频率？",
+    options: ["几乎不发", "偶尔记录一下", "经常分享日常和心得"],
+    dims: ["social_authenticity"], scores: [1, 2, 3]
+  }
+];
+
+// 维度名称映射
+const DIM_NAMES = [
+  '自尊自信', '自我清晰', '核心价值',
+  '依恋安全', '情感投入', '边界依赖',
+  '世界观念', '规则灵活', '人生意义',
+  '动机导向', '决策风格', '执行模式',
+  '社交主动', '人际边界', '表达真实'
+];
+const DIM_KEYS = [
+  'self_confidence','self_clarity','self_value',
+  'emotion_security','emotion_invest','emotion_boundary',
+  'attitude_worldview','attitude_rules','attitude_meaning',
+  'act_motivation','act_decision','act_execute',
+  'social_initiative','social_boundary','social_authenticity'
+];
+
+// ============================================================
+// 【人格模板】10种家长人格 × 15维度 (H=高3, M=中2, L=低1)
+// ============================================================
+const PERSONALITIES = [
+  {
+    name: '狮吼妈', en: 'ROAR 🦁',
+    tagline: '"我数到三！"',
+    visual: `<svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="roarBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF6B35"/><stop offset="100%" stop-color="#F7931E"/></linearGradient></defs><rect width="400" height="180" fill="url(#roarBg)"/><circle cx="200" cy="90" r="55" fill="rgba(255,255,255,0.15)"/><circle cx="200" cy="90" r="42" fill="rgba(255,255,255,0.25)"/><text x="200" y="82" text-anchor="middle" font-size="42" fill="#fff">🦁</text><text x="200" y="115" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.9)" font-weight="600">ROAR</text><text x="60" y="40" text-anchor="middle" font-size="22" fill="rgba(255,255,255,0.2)">💢</text><text x="340" y="45" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.2)">📣</text><text x="80" y="155" text-anchor="middle" font-size="16" fill="rgba(255,255,255,0.15)">📝</text><text x="320" y="150" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.15)">⏰</text></svg>`,
+    tags: ['情绪化', '爱之深责之切', '事后后悔', '外刚内柔'],
+    template: [1, 2, 3, 1, 3, 1, 1, 3, 3, 3, 2, 3, 2, 2, 2],
+    desc: `你不是脾气不好，你是**被逼出来的**。
+
+每次坐到书桌前，你都发誓这次一定温柔耐心。然后十分钟过去了——同一道题讲了五遍，孩子还是一脸茫然地看着你。那一刻，你体内有什么东西崩断了。
+
+狮吼妈的典型特征：开始是温柔的，中间是克制的，最后是——"我都讲了八百遍了！！！"你的音量与耐心成完美反比曲线，邻居都知道你家几点开始写作业。
+
+但其实吼完之后你最难过的人是自己。深夜里刷着育儿文章，想着明天一定要做个温和的家长。然后第二天……循环继续。
+
+**给狮吼妈的话**：你已经很努力了。情绪上来的时候离开现场一分钟，喝口水，深呼吸。孩子需要的不是一个永远不生气的超人，一个会道歉、会努力的妈妈，就已经很好了。`
+  },
+  {
+    name: '佛系躺', en: 'CHILL 🧘',
+    tagline: '随缘吧，不写了',
+    visual: `<svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="chillBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4DB6AC"/><stop offset="100%" stop-color="#80CBC4"/></linearGradient></defs><rect width="400" height="180" fill="url(#chillBg)"/><circle cx="200" cy="90" r="55" fill="rgba(255,255,255,0.15)"/><circle cx="200" cy="90" r="42" fill="rgba(255,255,255,0.25)"/><text x="200" y="82" text-anchor="middle" font-size="42" fill="#fff">🧘</text><text x="200" y="115" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.9)" font-weight="600">CHILL</text><text x="55" y="45" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.2)">☕</text><text x="345" y="50" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.2)">🌿</text><text x="70" y="155" text-anchor="middle" font-size="16" fill="rgba(255,255,255,0.15)">🍃</text><text x="330" y="152" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.15)">☁️</text></svg>`,
+    tags: ['松弛感', '心态王者', '顺其自然', '拒绝内卷'],
+    template: [3, 3, 1, 3, 1, 3, 3, 1, 1, 1, 1, 1, 1, 3, 3],
+    desc: `在所有家长类型中，你是最接近**心理健康**的那个。（开玩笑的，但也不完全是。）
+
+佛系躺家长的核心理念：作业写不完天不会塌，成绩差一点人不会废，童年快乐比满分重要一百倍。你不是不在乎，你是选择了另一种在乎的方式。
+
+你可能经历过一段时间的焦虑期，后来想通了——或者单纯累了。现在你的口头禅是"没关系""算了""随他去"。孩子考了60分？没事，下次加油。孩子不想上补习班？那就不上。
+
+有人说你不负责任，但你心里清楚：你只是不想让孩子重复自己的焦虑。在一个全民鸡血的时代，选择"不卷"，需要更大的勇气和定力。
+
+**给佛系躺的话**：你的松弛感是孩子的福气。只需要注意一点——佛系不等于放任，底线和习惯还是要在轻松的氛围中建立的。`
+  },
+  {
+    name: '鸡血卷王', en: 'GRIND 🔥',
+    tagline: '别人家的孩子在学Python',
+    visual: `<svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="grindBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#E53935"/><stop offset="100%" stop-color="#FF7043"/></linearGradient></defs><rect width="400" height="180" fill="url(#grindBg)"/><circle cx="200" cy="90" r="55" fill="rgba(255,255,255,0.12)"/><circle cx="200" cy="90" r="42" fill="rgba(255,255,255,0.22)"/><text x="200" y="82" text-anchor="middle" font-size="42" fill="#fff">🔥</text><text x="200" y="115" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.9)" font-weight="600">GRIND</text><text x="55" y="40" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.2)">📅</text><text x="350" y="45" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.2)">🏆</text><text x="65" y="155" text-anchor="middle" font-size="16" fill="rgba(255,255,255,0.15)">📚</text><text x="340" y="152" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.15)">⭐</text></svg>`,
+    tags: ['高期待', '全副武装', '焦虑驱动', '用心良苦'],
+    template: [2, 2, 3, 2, 3, 1, 1, 3, 3, 3, 3, 3, 3, 2, 1],
+    desc: `你的手机闹钟比孩子还多，日程表比CEO还满。
+
+周一奥数、周二钢琴、周三书法、周四编程、周五英语、周六游泳、周日画画——这不是孩子的 schedule，这是你的战场。你知道每一家机构的排名、每一位老师的口碑、每一个竞赛的含金量。
+
+鸡血卷王不是不爱孩子，恰恰相反——**你是因为太害怕孩子落后**。你看过太多"阶层固化"的文章，听过太多"输在起跑线"的故事。你想给孩子最好的一切，因为你深知这个世界不会对任何人手软。
+
+但偶尔深夜，看着熟睡的孩子，你也会问自己：这样对吗？累吗？值得吗？
+
+**给鸡血卷王的话**：你的用心和付出，孩子感受得到。但也请记得，一张绷紧的弦迟早会断。留一点空白的时间给孩子发呆、奔跑、什么都不做。那些"无用"的时刻，也许才是记忆里最珍贵的部分。`
+  },
+  {
+    name: '百度搬运工', en: 'COPY 🔍',
+    tagline: '让我先搜一下这题怎么做',
+    visual: `<svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="copyBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#5C6BC0"/><stop offset="100%" stop-color="#7986CB"/></linearGradient></defs><rect width="400" height="180" fill="url(#copyBg)"/><circle cx="200" cy="90" r="55" fill="rgba(255,255,255,0.15)"/><circle cx="200" cy="90" r="42" fill="rgba(255,255,255,0.25)"/><text x="200" y="82" text-anchor="middle" font-size="42" fill="#fff">🔍</text><text x="200" y="115" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.9)" font-weight="600">COPY</text><text x="60" y="40" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.2)">📱</text><text x="345" y="50" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.2)">❓</text><text x="70" y="155" text-anchor="middle" font-size="16" fill="rgba(255,255,255,0.15)">💡</text><text x="330" y="152" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.15)">🔎</text></svg>`,
+    tags: ['诚实面对', '好学型家长', '搜题达人', '不装不作'],
+    template: [1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 2, 2],
+    desc: `"妈妈这道题怎么做？"
+
+这句话是你的触发词。接下来的标准流程：打开手机→搜题→发现有好几种解法→逐一看过去→发现自己也不会→搜教学视频→看了二十分钟→回头发现孩子已经睡着了。
+
+百度搬运工是家长群体中最诚实的存在。你从不假装自己什么都懂，你的口头禅是"等一下，妈妈查一下"。你的浏览器历史记录清一色的搜题页面和教育类文章。
+
+你可能会因此感到愧疚——别的家长好像什么都会，怎么就我不行？但事实是：**愿意去查找答案的家长，已经超过了80%的人**。
+
+**给百度搬运工的话**：不会做题一点都不丢人。更重要的是，你在用实际行动告诉孩子：遇到问题不要慌，去找答案。这种学习态度，比多做对十道题更有价值。`
+  },
+  {
+    name: '忍术大师', en: 'NINJA 🥷',
+    tagline: '深呼吸...深呼吸...',
+    visual: `<svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ninjaBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#5D4037"/><stop offset="100%" stop-color="#8D6E63"/></linearGradient></defs><rect width="400" height="180" fill="url(#ninjaBg)"/><circle cx="200" cy="90" r="55" fill="rgba(255,255,255,0.15)"/><circle cx="200" cy="90" r="42" fill="rgba(255,255,255,0.25)"/><text x="200" y="82" text-anchor="middle" font-size="42" fill="#fff">🥷</text><text x="200" y="115" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.9)" font-weight="600">NINJA</text><text x="60" y="42" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.2)">🧘</text><text x="340" y="48" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.2)">😌</text><text x="70" y="155" text-anchor="middle" font-size="16" fill="rgba(255,255,255,0.15)">💆</text><text x="330" y="152" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.15)">🍵</text></svg>`,
+    tags: ['情绪管理大师', '表面平静', '内心翻腾', '以忍为上'],
+    template: [3, 3, 2, 3, 2, 3, 2, 2, 2, 2, 2, 2, 2, 3, 3],
+    desc: `表面平静如水，内心翻江倒海——这就是忍术大师的真实写照。
+
+孩子把"3+5"写成"9"的时候，你的脸上波澜不惊："宝贝再看看哦。"但你的拳头已经在桌子底下攥了十八次，心里的弹幕已经刷了整整三屏。
+
+你修炼过无数种情绪管理技巧：深呼吸法、正念冥想、暂时离开现场法、"把他当成别人家的孩子"法。你可能是全家情绪最稳定的人——不是因为你不生气，而是因为**你把所有的爆发都消化在了沉默里**。
+
+忍术大师也有撑不住的时候。某一天某个瞬间，积压的情绪突然决堤，你自己都被那个爆发的自己吓到了。然后内疚、自责、重新开始修炼。
+
+**给忍术大师的话**：忍耐是一种力量，但不是唯一的出路。找一个可以倾诉的人，或者 simply 写下来。你的情绪值得被看见，不必每一次都独自消化。`
+  },
+  {
+    name: '队友甩锅侠', en: 'PASS ⚽',
+    tagline: '"你去找你妈/爸"',
+    template: [2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 2, 2, 2],
+    visual: `<svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="passBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#26A69A"/><stop offset="100%" stop-color="#4DB6AC"/></linearGradient></defs><rect width="400" height="180" fill="url(#passBg)"/><circle cx="200" cy="90" r="55" fill="rgba(255,255,255,0.15)"/><circle cx="200" cy="90" r="42" fill="rgba(255,255,255,0.25)"/><text x="200" y="82" text-anchor="middle" font-size="42" fill="#fff">⚽</text><text x="200" y="115" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.9)" font-weight="600">PASS</text><text x="55" y="42" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.2)">👐</text><text x="350" y="48" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.2)">🏃</text><text x="68" y="155" text-anchor="middle" font-size="16" fill="rgba(255,255,255,0.15)">😅</text><text x="332" y="152" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.15)">🤷</text></svg>`,
+    tags: ['甩锅技术流', '分工明确', '战术撤退', '生存智慧'],
+    desc: `"这道题我不会，你去找妈妈/爸爸。"
+
+这就是队友甩锅侠的核心技能——**光速转移责任的技术已臻化境**。孩子一喊"帮我看看这道题"，你的条件反射就是把锅精准地传给另一半。不是你不负责任，你是经过理性分析后做出的最优决策：另一半确实更适合处理这种情况（至少你自己是这么说服自己的）。
+
+你可能在辅导作业这件事上的参与度不高，但你在其他方面弥补：接送、做饭、陪玩、赚钱养家……每个人都有自己的分工嘛。
+
+不过说真的，偶尔你也想过：是不是应该多承担一些？当你看到伴侣辅导作业时那种快要爆炸的表情，心里也会有一丝丝……好吧，确认了一下自己做出了正确的选择。
+
+**给队友甩锅侠的话**：分工合作没问题，但孩子需要的是**两个**都在场的父母，不只是作业辅导员。试着每周固定一两次亲自辅导，不是为了作业，是为了和孩子建立属于你们之间的连接。`
+  },
+  {
+    name: '内疚型妈妈', en: 'SORRY 💔',
+    tagline: '都怪我没教好...',
+    template: [1, 1, 2, 1, 3, 1, 1, 2, 2, 2, 2, 3, 1, 1, 3],
+    visual: `<svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sorryBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#9C27B0"/><stop offset="100%" stop-color="#BA68C8"/></linearGradient></defs><rect width="400" height="180" fill="url(#sorryBg)"/><circle cx="200" cy="90" r="55" fill="rgba(255,255,255,0.15)"/><circle cx="200" cy="90" r="42" fill="rgba(255,255,255,0.25)"/><text x="200" y="82" text-anchor="middle" font-size="42" fill="#fff">💔</text><text x="200" y="115" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.9)" font-weight="600">SORRY</text><text x="55" y="42" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.2)">😢</text><text x="348" y="48" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.2)">🙏</text><text x="68" y="155" text-anchor="middle" font-size="16" fill="rgba(255,255,255,0.15)">💭</text><text x="330" y="152" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.15)">🌧️</text></svg>`,
+    tags: ['过度自责', '完美主义', '内心柔软', '需要被看见'],
+    desc: `孩子考试没考好 → 是不是我平时没督促好？
+孩子跟同学闹矛盾 → 是不是我情商教育不到位？
+孩子不爱吃蔬菜 → 是我不是厨艺不好？
+
+内疚型妈妈的思维模式：**凡事都能找到自己的原因**。你像一台永不休止的自责机器，把所有的不完美都归因于自己做得不够好。你说的最多的三个字不是"我爱你"，而是"对不起"——对孩子、对老师、对伴侣、对自己。
+
+你可能是所有家长中最辛苦的那种——不是因为做的事最多，而是因为**背的包袱最重**。你对自己比对任何人都苛刻。
+
+但你忽略了一件事：孩子从来不觉得你需要道歉。在他眼里，你就是妈妈，这就够了。
+
+**给内疚型妈妈的话**：请把对自己的要求降低一半。你已经做得够好了，真的。今晚对着镜子说一句："我是好妈妈。"不需要理由，不需要条件，直接说。`
+  },
+  {
+    name: '晒娃狂魔', en: 'SHOW 📸',
+    tagline: '发个朋友圈先',
+    template: [3, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 3, 1, 1],
+    visual: `<svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="showBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#EC407A"/><stop offset="100%" stop-color="#F06292"/></linearGradient></defs><rect width="400" height="180" fill="url(#showBg)"/><circle cx="200" cy="90" r="55" fill="rgba(255,255,255,0.15)"/><circle cx="200" cy="90" r="42" fill="rgba(255,255,255,0.25)"/><text x="200" y="82" text-anchor="middle" font-size="42" fill="#fff">📸</text><text x="200" y="115" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.9)" font-weight="600">SHOW</text><text x="55" y="42" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.2)">📱</text><text x="348" y="48" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.2)">❤️</text><text x="68" y="155" text-anchor="middle" font-size="16" fill="rgba(255,255,255,0.15)">✨</text><text x="330" y="152" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.15)">🌟</text></svg>`,
+    tags: ['记录控', '朋友圈达人', '爱分享', '时光收藏家'],
+    desc: `孩子做对了一道难题 → 九宫格配文"老母亲欣慰" ✅
+孩子画了一幅画 → 全网发布"小小艺术家诞生" ✅
+孩子帮忙洗了个碗 → 长文感慨"长大了" ✅
+孩子乖乖吃饭了 → 视频记录"老母亲的泪点" ✅
+
+晒娃狂魔的朋友圈就是一本**实时更新的成长日记**。你的手机相册80%都是孩子的照片，你的朋友圈文案可以出书，你的点赞量稳定在全列表前三。
+
+有人说你炫耀，但你心里清楚：这不是炫耀，这是**记录**。你怕错过孩子成长的每一个瞬间，而朋友圈就是你最方便的时光胶囊。等孩子长大了，这些都是最珍贵的回忆。
+
+当然，偶尔也会有那么一刻——看到别人家孩子的"成果展示"，心里会悄悄比较一下。人性使然，不用太苛责自己。
+
+**给晒娃狂魔的话**：继续记录吧，这些点滴在未来都是无价之宝。也记得偶尔把镜头转向自己——你也是这个故事里很重要的一部分。`
+  },
+  {
+    name: '崩溃边缘人', en: 'EDGE 💥',
+    tagline: '降压药在哪...?',
+    template: [1, 1, 2, 1, 3, 1, 1, 2, 2, 3, 2, 3, 1, 2, 2],
+    visual: `<svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="edgeBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#455A64"/><stop offset="100%" stop-color="#607D8B"/></linearGradient></defs><rect width="400" height="180" fill="url(#edgeBg)"/><circle cx="200" cy="90" r="55" fill="rgba(255,255,255,0.15)"/><circle cx="200" cy="90" r="42" fill="rgba(255,255,255,0.25)"/><text x="200" y="82" text-anchor="middle" font-size="42" fill="#fff">💥</text><text x="200" y="115" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.9)" font-weight="600">EDGE</text><text x="55" y="42" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.2)">😫</text><text x="350" y="48" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.2)">⚡</text><text x="68" y="155" text-anchor="middle" font-size="16" fill="rgba(255,255,255,0.15)">💧</text><text x="330" y="152" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.15)">🔋</text></svg>`,
+    tags: ['极限拉扯', '隐忍坚强', '需要出口', '你很勇敢'],
+    desc: `你生活在一条细细的线上。左边是"我还行"，右边是"我真的受不了了"。
+
+每一天都是一场微型的走钢丝表演。早上送孩子上学——稳住。上班开会——稳住。下班接孩子——稳住。辅导作业——呃……正在努力稳住。
+
+崩溃边缘人的特点是：**在外人看来一切正常，只有你自己知道自己离爆炸有多近**。可能是一道讲了十遍还不会的数学题，可能是孩子一句无心的"我讨厌你"，可能是仅仅因为今天太累了——然后突然之间，眼泪就下来了。
+
+你不是脆弱，你是**承载了太多而没有足够的出口**。工作、家庭、育儿、社会期待……每一项都在消耗你的能量 reserves。
+
+**给崩溃边缘人说的话**：快到边缘的时候就主动停下来，不要等到掉下去了才后悔。找一个人说说，或者只是一个人静静地待一会儿。寻求帮助不是软弱，是智慧。`
+  },
+  {
+    name: '全能超人', en: 'SUPER 🦸‍♀️',
+    tagline: '我可以的！',
+    template: [3, 3, 3, 2, 3, 2, 2, 3, 3, 3, 3, 3, 3, 2, 2],
+    visual: `<svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="superBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1E88E5"/><stop offset="100%" stop-color="#42A5F5"/></linearGradient></defs><rect width="400" height="180" fill="url(#superBg)"/><circle cx="200" cy="90" r="55" fill="rgba(255,255,255,0.15)"/><circle cx="200" cy="90" r="42" fill="rgba(255,255,255,0.25)"/><text x="200" y="82" text-anchor="middle" font-size="42" fill="#fff">🦸</text><text x="200" y="115" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.9)" font-weight="600">SUPER</text><text x="55" y="42" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.2)">⭐</text><text x="350" y="48" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.2)">🏅</text><text x="68" y="155" text-anchor="middle" font-size="16" fill="rgba(255,255,255,0.15)">💪</text><text x="330" y="152" text-anchor="middle" font-size="18" fill="rgba(255,255,255,0.15)">✊</text></svg>`,
+    tags: ['六边形战士', '全能选手', '默默扛下所有', '也请照顾自己'],
+    desc: `工作全勤、家务全包、辅导作业从不出错、班级家委会主力、周末还能带孩子去博物馆……
+
+全能超人是所有家长心中的**六边形战士**——或者说，至少看起来是。你的效率高得让同事惊叹，你的耐心多得让孩子依赖，你的能量大到让人怀疑你是不是偷偷喝了红牛。
+
+但只有你自己知道：**超人也会累，只是超人不说**。你习惯了扛下一切，习惯了说"我来吧没关系"，习惯了把自己排到最后。深夜卸下铠甲的那一刻，疲惫才会悄悄涌上来。
+
+你可能觉得这就是妈妈/爸爸应该做的。但事实是——没有人要求你完美，是你自己要求的。
+
+**给全能超人的话**：偶尔示弱不会让你的光芒黯淡。把一件事交给别人去做，天不会塌。本周挑战：对一件小事说"我不想做了"——然后真的不做。你会发现，世界照常运转。`
+  }
+];
+
+// ============================================================
+// 状态变量
+// ============================================================
+let currentQ = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+
+// ============================================================
+// 页面切换
+// ============================================================
+function startQuiz() {
+  document.getElementById('homePage').style.display = 'none';
+  document.getElementById('quizPage').style.display = 'block';
+  renderQuestion();
+}
+
+function showPage(pageId) {
+  document.getElementById('homePage').style.display = pageId === 'home' ? 'flex' : 'none';
+  document.getElementById('quizPage').style.display = pageId === 'quiz' ? 'block' : 'none';
+  document.getElementById('resultPage').style.display = pageId === 'result' ? 'block' : 'none';
+}
+
+// ============================================================
+// 渲染题目
+// ============================================================
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  document.getElementById('qNum').textContent = `第 ${currentQ + 1} 题 / 共 ${QUESTIONS.length} 题`;
+  document.getElementById('progressFill').style.width = `${((currentQ) / QUESTIONS.length) * 100}%`;
+  document.getElementById('questionText').textContent = q.q;
+
+  const optsEl = document.getElementById('optionsList');
+  optsEl.innerHTML = '';
+  q.options.forEach((opt, idx) => {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.className = 'option-btn' + (answers[currentQ] === idx ? ' selected' : '');
+    btn.textContent = `${['A','B','C'][idx]}. ${opt}`;
+    btn.onclick = () => selectOption(idx);
+    li.appendChild(btn);
+    optsEl.appendChild(li);
+  });
+
+  // 动画
+  const card = document.getElementById('questionCard');
+  card.classList.remove('fade-in');
+  void card.offsetWidth;
+  card.classList.add('fade-in');
+
+  updateNavButtons();
+}
+
+function selectOption(idx) {
+  answers[currentQ] = idx;
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach((b, i) => b.classList.toggle('selected', i === idx));
+  updateNavButtons();
+}
+
+function updateNavButtons() {
+  document.getElementById('prevBtn').disabled = currentQ === 0;
+  const nextBtn = document.getElementById('nextBtn');
+  if (currentQ === QUESTIONS.length - 1) {
+    nextBtn.textContent = '查看结果';
+    nextBtn.disabled = answers.includes(null);
+  } else {
+    nextBtn.textContent = '下一题';
+    nextBtn.disabled = false;
+  }
+}
+
+function prevQuestion() {
+  if (currentQ > 0) { currentQ--; renderQuestion(); }
+}
+
+function nextQuestion() {
+  if (currentQ < QUESTIONS.length - 1) {
+    currentQ++;
+    renderQuestion();
+  } else if (!answers.includes(null)) {
+    showResult();
+  }
+}
+
+// ============================================================
+// 计算结果
+// ============================================================
+function calculateScores() {
+  // 初始化15个维度分数
+  let dimScores = {};
+  DIM_KEYS.forEach(k => dimScores[k] = 0);
+
+  QUESTIONS.forEach((q, qi) => {
+    if (answers[qi] !== null) {
+      const dim = q.dims[0];
+      const score = q.scores[answers[qi]]; // A=1, B=2, or C=3
+      dimScores[dim] += score;
+    }
+  });
+
+  // 归一化到0-100（每个维度2道题，总分2-6分 → 映射为0-100）
+  let normalized = {};
+  DIM_KEYS.forEach(k => {
+    normalized[k] = Math.round(((dimScores[k] - 2) / 4) * 100);
+    normalized[k] = Math.max(0, Math.min(100, normalized[k]));
+  });
+
+  return normalized;
+}
+
+function manhattanDistance(vec1, vec2) {
+  let dist = 0;
+  for (let i = 0; i < vec1.length; i++) {
+    dist += Math.abs(vec1[i] - vec2[i]);
+  }
+  return dist;
+}
+
+function findBestMatch(normalizedScores) {
+  // 将归一化的0-100转为1-3尺度来匹配模板
+  let userVec = DIM_KEYS.map(k => {
+    const v = normalizedScores[k];
+    if (v >= 67) return 3;
+    if (v <= 33) return 1;
+    return 2;
+  });
+
+  let bestIdx = 0;
+  let bestDist = Infinity;
+  let distances = [];
+
+  PERSONALITIES.forEach((p, idx) => {
+    const d = manhattanDistance(userVec, p.template);
+    distances.push(d);
+    if (d < bestDist) {
+      bestDist = d;
+      bestIdx = idx;
+    }
+  });
+
+  // 计算匹配度（距离越小匹配度越高，基于最大可能距离45）
+  const maxPossibleDist = 30; // 15维 × 最大差值2
+  const matchPct = Math.max(50, Math.round((1 - bestDist / maxPossibleDist) * 100));
+
+  return { personality: PERSONALITIES[bestIdx], matchPct, distances };
+}
+
+// ============================================================
+// 显示结果
+// ============================================================
+function showResult() {
+  showPage('result');
+  const scores = calculateScores();
+  const result = findBestMatch(scores);
+  const p = result.personality;
+
+  document.getElementById('resultName').textContent = p.name;
+  document.getElementById('resultEn').textContent = p.en;
+  document.getElementById('resultTagline').textContent = `"${p.tagline}"`;
+  document.getElementById('matchRate').innerHTML = `匹配度 ${result.matchPct}%`;
+
+  // 渲染人格专属卡片图
+  if (p.visual) {
+    document.getElementById('cardVisual').innerHTML = p.visual;
+    document.getElementById('cardTypeBig').textContent = p.name;
+    document.getElementById('cardEnBig').textContent = p.en;
+    document.getElementById('cardQuote').textContent = `"${p.tagline}"`;
+    
+    // 渲染标签
+    const tagsEl = document.getElementById('cardTags');
+    tagsEl.innerHTML = '';
+    (p.tags || []).forEach(tag => {
+      const span = document.createElement('span');
+      span.className = 'card-tag';
+      span.textContent = tag;
+      tagsEl.appendChild(span);
+    });
+  }
+
+  document.getElementById('resultDesc').innerHTML = p.desc.replace(/\n\n/g, '</p><p style="margin-top:12px;">').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+  // 绘制雷达图
+  setTimeout(() => drawRadarChart(scores), 300);
+}
+
+// ============================================================
+// 雷达图绘制（SVG方案，100%可靠）
+// ============================================================
+function drawRadarChart(scores) {
+  const svg = document.getElementById('radarSvg');
+  if (!svg) return;
+
+  const cx = 200, cy = 200, radius = 130;
+  const levels = 5;
+  const numDims = DIM_NAMES.length;
+  const angleStep = (Math.PI * 2) / numDims;
+  const startAngle = -Math.PI / 2;
+
+  let svgContent = '';
+
+  // 背景网格（多边形）
+  for (let lv = 1; lv <= levels; lv++) {
+    let pts = '';
+    for (let i = 0; i < numDims; i++) {
+      const a = startAngle + i * angleStep;
+      const r = (radius / levels) * lv;
+      const x = cx + r * Math.cos(a);
+      const y = cy + r * Math.sin(a);
+      pts += `${x.toFixed(1)},${y.toFixed(1)} `;
+    }
+    svgContent += `<polygon points="${pts.trim()}" fill="none" stroke="${lv===levels?'#DDD':'#F0EDE8'}" stroke-width="${lv===levels?1.2:0.6}"/>`;
+  }
+
+  // 轴线
+  for (let i = 0; i < numDims; i++) {
+    const a = startAngle + i * angleStep;
+    svgContent += `<line x1="${cx}" y1="${cy}" x2="${(cx+radius*Math.cos(a)).toFixed(1)}" y2="${(cy+radius*Math.sin(a)).toFixed(1)}" stroke="#EEE8E4" stroke-width="0.6"/>`;
+  }
+
+  // 数据区域
+  const dataVals = DIM_KEYS.map(k => scores[k]);
+  let dataPts = '';
+  for (let i = 0; i < numDims; i++) {
+    const a = startAngle + i * angleStep;
+    const val = dataVals[i] / 100;
+    const x = cx + radius * val * Math.cos(a);
+    const y = cy + radius * val * Math.sin(a);
+    dataPts += `${x.toFixed(1)},${y.toFixed(1)} `;
+  }
+  svgContent += `<polygon points="${dataPts.trim()}" fill="rgba(232,115,74,0.18)" stroke="#E8734A" stroke-width="2" stroke-linejoin="round"/>`;
+
+  // 数据点
+  for (let i = 0; i < numDims; i++) {
+    const a = startAngle + i * angleStep;
+    const val = dataVals[i] / 100;
+    const x = cx + radius * val * Math.cos(a);
+    const y = cy + radius * val * Math.sin(a);
+    svgContent += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5" fill="#E8734A" stroke="#fff" stroke-width="1.5"/>`;
+  }
+
+  // 标签
+  for (let i = 0; i < numDims; i++) {
+    const a = startAngle + i * angleStep;
+    const lr = radius + 24;
+    let lx = cx + lr * Math.cos(a);
+    let ly = cy + lr * Math.sin(a);
+
+    // 微调对齐
+    let anchor = 'middle', dx = 0, dy = 0;
+    if (Math.abs(Math.cos(a)) > 0.85) { dy = Math.sin(a) > 0 ? 12 : -10; anchor = 'middle'; }
+    else if (Math.abs(Math.sin(a)) > 0.85) { anchor = Math.cos(a) > 0 ? 'start' : 'end'; dy = 4; }
+    else { anchor = 'middle'; dy = Math.sin(a) > 0 ? 14 : -8; }
+
+    lx += dx; ly += dy;
+    svgContent += `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" fill="#636E72" font-size="11" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif">${DIM_NAMES[i]}</text>`;
+  }
+
+  svg.innerHTML = svgContent;
+}
+
+// ============================================================
+// 分享功能
+// ============================================================
+function shareResult() {
+  const name = document.getElementById('resultName').textContent;
+  const en = document.getElementById('resultEn').textContent;
+  const tagline = document.getElementById('resultTagline').textContent;
+  const matchPct = document.getElementById('matchRate').textContent;
+
+  const text = `【我的家长人格测试结果】🎯\n${name} ${en}\n${tagline}\n${matchPct}\n\n👉 来测测你是哪种家长人格！`;
+
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('✅ 结果已复制到剪贴板，快去分享吧！');
+    }).catch(() => {
+      fallbackShare(text);
+    });
+  } else {
+    fallbackShare(text);
+  }
+}
+
+function fallbackShare(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); alert('✅ 结果已复制！'); } catch(e) {}
+  document.body.removeChild(ta);
+}
+</script>
+
+</body>
+</html>
